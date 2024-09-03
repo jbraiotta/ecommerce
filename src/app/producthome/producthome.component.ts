@@ -6,10 +6,7 @@ import { ProductListComponent } from "../productlist/productlist.component";
   standalone: true,
   imports: [ProductListComponent],
   template: `
-    <p>
-      producthome works!
-    </p>
-    <app-productlist></app-productlist>
+      <app-productlist></app-productlist>
   `,
   styleUrl: './producthome.component.css'
 })

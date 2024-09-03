@@ -3,11 +3,12 @@ import { Observable } from 'rxjs';
 import { IProduct } from '../types/types';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
+import { AsyncPipe } from '@angular/common'
 
 @Component({
   selector: 'app-productlist',
   standalone: true,
-  imports: [],
+  imports: [AsyncPipe],
   template: `
 <div class="container">
     @let productList = (productResult$ | async);
@@ -18,7 +19,7 @@ Al hacer esto al principio de la plantilla, te aseguras de que el resultado del 
     @if(!productList?.length){
     <p>loading...</p>
     }@else {
-    <table class="table table-secondary table-striped">
+    <table class="table table-secondary table-striped center">
         <caption>
             Listado de productos
         </caption>
@@ -31,10 +32,10 @@ Al hacer esto al principio de la plantilla, te aseguras de que el resultado del 
         </thead>
         <tbody>
 
-            @for(hero of productList; track hero.id; let i = $index){
-            <tr (click)="onProductClicked(hero.id)">
+            @for(product of productList; track product.id; let i = $index){
+            <tr (click)="onProductClicked(product.id)">
                 <td scope="row">{{ i + 1 }}</td>
-                <td>{{ hero.name }}</td>
+                <td>{{ product.name }}</td>
 
             </tr>
             }
@@ -42,7 +43,7 @@ Al hacer esto al principio de la plantilla, te aseguras de que el resultado del 
         </tbody>
         <tfoot>
             <tr>
-                <td colspan="2">Heroes count: {{ (productResult$ | async)?.length }}</td>
+                <td colspan="2">Products count: {{ (productResult$ | async)?.length }}</td>
             </tr>
         </tfoot>
     </table>
@@ -61,6 +62,6 @@ productList: any;
   }
 
   onProductClicked(productId: string): void {
-    this.router.navigate(['/product-list', productId]);
+    this.router.navigate(['/product-detail', productId]);
   }
 }
