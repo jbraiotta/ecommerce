@@ -5,4 +5,14 @@ export interface IProduct {
   quantity: number;
   category: string;
   createdAt: Date;
+  price: number;
+  description: string;
+}
+
+export interface IContact {
+  id: string;
+  name: string;
+  createdAt: Date;
+  email: string;
+  message: string;
 }

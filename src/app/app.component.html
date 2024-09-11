@@ -1,5 +1,20 @@
+<div class="container">
 <main class="main">
+  <h1></h1>
   <div class="content">
-    <app-producthome></app-producthome>
+    <header>
+      <nav>
+        <div class="col-md-12 text-center">
+          <a class="btn btn-success m-lg-4 mb-4" routerLink="/product-list" routerLinkActive="activeButton" ariaCurrentWhenActive="page">Productos</a>
+          <a class="btn btn-success m-lg-4 mb-4" routerLink="/contacto" routerLinkActive="activeButton" ariaCurrentWhenActive="page">Contacto</a>
+        </div>
+      </nav>
+    </header>
+
+    <router-outlet></router-outlet>
   </div>
 </main>
+</div>
+
+
+<router-outlet />

@@ -1,14 +1,11 @@
 import { Component } from '@angular/core';
-import { RouterOutlet } from '@angular/router';
-import { ProductHomeComponent } from "./producthome/producthome.component";
-import { PageNotFoundComponent } from "./page-not-found/page-not-found.component";
-import { ProductListComponent } from './productlist/productlist.component';
-import { ProductDetailComponent } from './productdetail/productdetail.component';
+import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { ProductListComponent } from "./productlist/productlist.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, ProductHomeComponent, ProductListComponent, ProductDetailComponent, PageNotFoundComponent],
+  imports: [RouterOutlet, RouterLink, RouterLinkActive, ProductListComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })

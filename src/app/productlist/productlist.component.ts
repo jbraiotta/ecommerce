@@ -1,60 +1,67 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { IProduct } from '../types/types';
 import { ApiService } from '../services/api.service';
 import { Router } from '@angular/router';
 import { AsyncPipe } from '@angular/common'
+import { CarouselModule, CarouselResponsiveOptions } from 'primeng/carousel';
 
 @Component({
   selector: 'app-productlist',
   standalone: true,
-  imports: [AsyncPipe],
+  imports: [AsyncPipe, CarouselModule],
   template: `
-<div class="container">
-    @let productList = (productResult$ | async);
-    <!-- heroesResult$ es un observable, lo que significa que no contiene los datos directamente, sino que emite valores de datos de forma asincrónica con el tiempo.
-El operador async se utiliza para subscribirse automáticamente al observable y obtener su valor más reciente. Este valor es lo que se asigna a heroesList.
-Al hacer esto al principio de la plantilla, te aseguras de que el resultado del observable se resuelve y se almacena en heroesList, lo que facilita el trabajo con los datos resueltos a lo largo de la plantilla. -->
 
+  <div class="container">
+  <p> Listado de productos</p>
+  @let productList = (productResult$ | async);
     @if(!productList?.length){
     <p>loading...</p>
     }@else {
-    <table class="table table-secondary table-striped center">
-        <caption>
-            Listado de productos
-        </caption>
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Name</th>
-
-            </tr>
-        </thead>
-        <tbody>
-
-            @for(product of productList; track product.id; let i = $index){
-            <tr (click)="onProductClicked(product.id)">
-                <td scope="row">{{ i + 1 }}</td>
-                <td>{{ product.name }}</td>
-
-            </tr>
-            }
-
-        </tbody>
-        <tfoot>
-            <tr>
-                <td colspan="2">Products count: {{ (productResult$ | async)?.length }}</td>
-            </tr>
-        </tfoot>
-    </table>
-    }
-</div>
+      <p-carousel
+    [value]="productList!"
+    [numVisible]="3"
+    [numScroll]="3"
+    [circular]="false"
+    [responsiveOptions]="responsiveOptions">
+        <ng-template let-product pTemplate="item">
+            <div class="border-1 surface-border border-round m-2 p-3">
+                <div class="mb-3">
+                    <div class="relative mx-auto">
+                        <img (click)="onProductClicked(product.id)"
+                            src="/assets/{{ product.avatar }}"
+                            [alt]="product.name"
+                            class="w-full border-round"
+                            width="200px" />
+                        <p-tag
+                            class="absolute"
+                            [ngStyle]="{ 'left.px': 5, 'top.px': 5 }" />
+                    </div>
+                </div>
+                <div class="mb-3 font-medium">
+                    {{ product.name }}
+                </div>
+                <div class="flex justify-content-between align-items-center">
+                <div class="mt-0 font-semibold text-xl">
+                    {{ '$' + product.price }}
+                </div>
+                    <span>
+                        <!-- <p-button icon="pi pi-heart" severity="secondary" [outlined]="true" />
+                        <p-button icon="pi pi-shopping-cart" styleClass="ml-2" /> -->
+                    </span>
+                </div>
+            </div>
+        </ng-template>
+</p-carousel>
+}
   `,
   styleUrl: './productlist.component.css'
 })
 export class ProductListComponent implements OnInit {
   public productResult$!: Observable<IProduct[]>;
+  @Input('productSelected') productSelected : boolean = false;
 productList: any;
+responsiveOptions: CarouselResponsiveOptions[]|undefined;
   constructor(private api: ApiService, private router: Router) {}
 
   ngOnInit(): void {
@@ -62,6 +69,8 @@ productList: any;
   }
 
   onProductClicked(productId: string): void {
+    console.log(productId)
+    this.productSelected = true;
     this.router.navigate(['/product-detail', productId]);
   }
 }
